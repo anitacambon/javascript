@@ -36,33 +36,36 @@ if ((USER === usuario) && (PASS === contrasenia)) {
 /*Elegir y abonar inscripcion/es*/
 
 let total = 0
-let mensaje = "Categorías:\n1 - Adulto1 $1000 (21-25 años)\n2 - Adulto2 $1500 (26-30 años)\n3 - Master1 $2000 (31-35 años)\n4 - Master2 $2500 (36-40 años)\n5 - Total a abonar sin IVA\n6 - Continuar a ventana de pago\n0 - Salir"
-do{
-opcion = Number(prompt(mensaje))
-if (opcion === 1){
-    alert("Te inscribiste a categoría Adulto1")
-    total += 1000
-}else if(opcion === 2){
-    alert("Te inscribiste a categoría Adulto2")
-    total += 1500
-}else if(opcion === 3){
-    alert("Te inscribiste a categoría Master1")
-    total += 2000
-}else if(opcion === 4){
-    alert("Te inscribiste a categoría Master2")
-    total += 2500
-}else if(opcion === 5){
-    alert("El total sin IVA es $" + total)
-}else if(opcion === 6){
-    alert("A continuación te vamos a dirigir a Mercado Pago")
-}
-}while (opcion !== 0)
+let mensaje = "Categorías:\n1 - Adulto1 $1000 (21-25 años)\n2 - Adulto2 $1500 (26-30 años)\n3 - Master1 $2000 (31-35 años)\n4 - Master2 $2500 (36-40 años)\n5 - Total a abonar\n6 - Conocé tu descuento\n0 - Salir"
+do {
+    opcion = Number(prompt(mensaje))
+    if (opcion === 1) {
+        alert("Te inscribiste a categoría Adulto1")
+        total += 1000
+    } else if (opcion === 2) {
+        alert("Te inscribiste a categoría Adulto2")
+        total += 1500
+    } else if (opcion === 3) {
+        alert("Te inscribiste a categoría Master1")
+        total += 2000
+    } else if (opcion === 4) {
+        alert("Te inscribiste a categoría Master2")
+        total += 2500
+    } else if (opcion === 5) {
+        alert ("El total a abonar es $" + total)
+    } else if (opcion === 6) {
+        total -= 500
+        conDescuento(total)
+    }
+} while (opcion !== 0)
 alert("Oss")
 
-/* falta la siguiente formula */
-masIva(total)
-function masIva(total) {
-    return (total * 0.21 + total)
-}
+/* Validar si corresponde descuento */
 
-alert("El total a pagar es " + masIva)
+function conDescuento(total) {
+    if(total < 2000){
+        alert("No tiene descuento")
+    }else if(total > 2001){
+        alert("El total con descuento es $" + total)
+    }
+}
