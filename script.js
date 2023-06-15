@@ -1,71 +1,42 @@
-/*Ingresar si realiza Jiu Jitsu*/
+let competidores = [
+    { nombre: "Diaz, Nicolas", edad: "48 - Master 3", faixa: "negro", categoria: "medio pesado", medallas: "1" },
+    { nombre: "Gomez, Julian", edad: "37 - Master 2", faixa: "negro", categoria: "pesado", medallas: "3" },
+    { nombre: "Cambon, Ana", edad: "32 - Master 1", faixa: "blanco", categoria: "pena", medallas: "1" },
+    { nombre: "Rodriguez, Julieta", edad: "Adulto 1", faixa: "violeta", categoria: "leve", medallas: "2" },
+    { nombre: "Roca, Leandro", edad: "Adulto 1", faixa: "marron", categoria: "pena", medallas: "0" },
+    { nombre: "Fernandez, Matias", edad: "Master 4", faixa: "blanco", categoria: "medio pesado", medallas: "3" },
+    { nombre: "Correa, Marcela", edad: "Adulto 2", faixa: "marron", categoria: "pena", medallas: "1" },
+    { nombre: "Acosta, Jimena", edad: "Master 1", faixa: "azul", categoria: "leve", medallas: "2" },
+    { nombre: "Lopez, Mario", edad: "Master 3", faixa: "azul", categoria: "pesado", medallas: "4" },
+    { nombre: "Martinez, Gonzalo", edad: "Master 2", faixa: "marron", categoria: "pena", medallas: "1" }
+]
 
-let jiuJitsu = prompt("Practica Jiu Jitsu?")
+let mensaje = "Seleccione una opción:\n1 - Listado de competidores\n2 - Filtrar por faixa\n3 - Ordenar por edad\n4 - Buscar por palabra clave\n5 - Total de medallas ganadas\n0 - SALIR"
 
-if (jiuJitsu == "si") {
-    alert("Bienvenido")
-} else {
-    alert("Chau")
-}
+let opcion
 
-
-/*Ingresar Usuario y contraseña en menos de 3 intentos, si falla, notificar que es incorrecto*/
-
-const USER = "Ana Cambon"
-const PASS = "Ana123"
-
-let usuario
-let constrasenia
-
-let intentos = 1
-
-do {
-    usuario = prompt("Ingrese nombre de usuario")
-    contrasenia = prompt("Ingrese contraseña")
-    intentos++
-} while (intentos < 3 && ((USER !== usuario) || (PASS !== contrasenia)))
-
-if ((USER === usuario) && (PASS === contrasenia)) {
-    alert("Bienvenido/a" + " " + usuario)
-} else {
-    alert("Usuario y/o contraseña incorrecto/s")
-}
-
-
-
-/*Elegir y abonar inscripcion/es*/
-
-let total = 0
-let mensaje = "Categorías:\n1 - Adulto1 $1000 (21-25 años)\n2 - Adulto2 $1500 (26-30 años)\n3 - Master1 $2000 (31-35 años)\n4 - Master2 $2500 (36-40 años)\n5 - Total a abonar\n6 - Conocé tu descuento\n0 - Salir"
 do {
     opcion = Number(prompt(mensaje))
     if (opcion === 1) {
-        alert("Te inscribiste a categoría Adulto1")
-        total += 1000
-    } else if (opcion === 2) {
-        alert("Te inscribiste a categoría Adulto2")
-        total += 1500
-    } else if (opcion === 3) {
-        alert("Te inscribiste a categoría Master1")
-        total += 2000
-    } else if (opcion === 4) {
-        alert("Te inscribiste a categoría Master2")
-        total += 2500
-    } else if (opcion === 5) {
-        alert ("El total a abonar es $" + total)
-    } else if (opcion === 6) {
-        total -= 500
-        conDescuento(total)
+        listar(competidores)
+    } if (opcion === 2) {
+        let faixa = prompt("Elegir categoria: blanco, azul, violeta, marron, negro")
+        let competidoresFiltrados = competidores.filter(competidor => competidor.faixa === faixa)
+        alert(listar(competidoresFiltrados))
+    } if (opcion === 3) {
+
+    } if (opcion === 4) {
+        let palabraClave = prompt("Ingrese palabra clave")
+        let competidoresBuscados = competidores.find(competidor => competidor.nombre || competidor.edad || competidor.faixa || competidor.categoria === palabraClave)
+        alert(listar(competidoresBuscados))
     }
 } while (opcion !== 0)
-alert("Oss")
 
-/* Validar si corresponde descuento */
-
-function conDescuento(total) {
-    if(total < 2000){
-        alert("No tiene descuento")
-    }else if(total > 2001){
-        alert("El total con descuento es $" + total)
-    }
+function listar(arrayAListar) {
+    let listado = " "
+    arrayAListar.forEach(element => {
+        listado = listado + element.nombre + "\n"
+    })
+    alert(listado)
 }
+
