@@ -1,6 +1,6 @@
 let competidores = [
-    { nombre: "Diaz, Nicolas", edad: "48", faixa: "negro", categoria: "medio pesado", medallas: 1 },
-    { nombre: "Gomez, Julian", edad: "37", faixa: "negro", categoria: "pesado", medallas: 3 },
+    { nombre: "Diaz, Nicolas", edad: 48, faixa: "negro", categoria: "medio pesado", medallas: 1 },
+    { nombre: "Gomez, Julian", edad: 37, faixa: "negro", categoria: "pesado", medallas: 3 },
     { nombre: "Cambon, Ana", edad: 32, faixa: "blanco", categoria: "pena", medallas: 1 },
     { nombre: "Rodriguez, Julieta", edad: 22, faixa: "violeta", categoria: "leve", medallas: 2 },
     { nombre: "Roca, Leandro", edad: 24, faixa: "marron", categoria: "pena", medallas: 0 },
@@ -11,7 +11,7 @@ let competidores = [
     { nombre: "Martinez, Gonzalo", edad: 40, faixa: "marron", categoria: "pena", medallas: 1 }
 ]
 
-let mensaje = "Seleccione una opción:\n1 - Listado de competidores\n2 - Filtrar por faixa\n3 - Ordenar por edad menor a mayor\n4 - Buscar cuantás medallas ganó un competidor\n5 - Total de medallas ganadas\n0 - SALIR"
+let mensaje = "Seleccione una opción:\n1 - Listado de competidores\n2 - Filtrar por faixa\n3 - Ordenar edad de menor a mayor\n4 - Buscar competidor por categoría de peso\n5 - Total de medallas obtenidas\n0 - SALIR"
 
 let opcion
 
@@ -22,16 +22,18 @@ do {
     } else if (opcion === 2) {
         let faixa = prompt("Elegir faixa: blanco, azul, violeta, marron, negro")
         let competidoresFiltrados = competidores.filter(competidor => competidor.faixa === faixa)
-        alert(listar(competidoresFiltrados))
+        listar(competidoresFiltrados)
     } else if (opcion === 3) {
-        /* ordenar(competidores)*/
+        ordenado(ordenar(competidores, "ASC"))
     } else if (opcion === 4) {
-        /* let cantidad = prompt("Ingrese un número de 0 a 4 inclusive")
-        let medallasSeleccionadas = competidores.find(competidor => competidor.medallas === cantidad)
-        alert(medallasSeleccionadas)*/
+        let peso = prompt("Ingrese leve/pena/medio pesado/pesado")
+        let categoriaBuscada = competidores.find(competidor => competidor.categoria.includes(peso))
+        alert(categoriaBuscada.nombre)
     } else if (opcion === 5) {
+        let totalMedallas = competidores.reduce((acum, competidor) => acum + competidor.medallas, 0)
+        alert(totalMedallas + " medallas obtenidas")
     }
-} while (opcion !== 6) {
+} while (opcion !== 0) {
     alert("Gracias por su consulta")
 }
 
@@ -44,9 +46,9 @@ function listar(arrayAListar) {
     alert(listado)
 }
 
-/* 
-function ordenar(arrayAOrdenar) {
-    return arrayAOrdenar.sort((a, b) => {
+
+function ordenar(arrayDeEdades, orden) {
+    let arrayOrdenado = arrayDeEdades.sort((a, b) => {
         if (a.edad < b.edad) {
             return -1
         }
@@ -55,11 +57,22 @@ function ordenar(arrayAOrdenar) {
         }
         return 0
     })
+    if (orden === "ASC") {
+        return arrayOrdenado
+    }
 }
 
-function sumar(arrayTotalMedallas) {
-
+function ordenado(arrayDeEdades) {
+    let listado = "Nombre - Edad:\n"
+    arrayDeEdades.forEach(element => {
+        listado = listado + element.nombre + "-" + element.edad + "\n"
+    })
+    alert(listado)
 }
-*/
+
+
+
+
+
 
 
