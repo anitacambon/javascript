@@ -35,7 +35,7 @@ function catalogoPrincipal() {
         { id: 12003, nombre: "Pase 12 clases", categoria: "cuota", unidades: 500, precio: 6000, rutaImagen: "" },
         { id: 12004, nombre: "Pase libre", categoria: "cuota", unidades: 500, precio: 10500, rutaImagen: "" }
     ]
-    
+
 
     let contenedorFiltros = document.getElementById("categorias")
 
@@ -47,6 +47,9 @@ function catalogoPrincipal() {
         botonFiltro.addEventListener("click", filtrarPorCategoria)
     }
 
+    let botonCarrito = document.getElementById("botonCarrito")
+    botonCarrito.addEventListener("click", mostrarOcultar)
+
     crearTarjetas(productos)
     crearCategorias(productos, contenedorFiltros)
 }
@@ -56,16 +59,29 @@ catalogoPrincipal()
 function crearTarjetas(array) {
     let contenedor = document.getElementById("productos")
     contenedor.innerHTML = ""
-    array.forEach(elemento => {
-        let producto = document.createElement("div")
-        producto.className = "tarjetaProducto"
-        producto.innerHTML = `
-            <h4>${elemento.nombre} </h4>
-            <img class="imagen" src="images/${elemento.rutaImagen}">
-            <h4>$${elemento.precio} talle ${elemento.talle} </h4>
+    array.forEach(producto => {
+        let tarjetaProducto = document.createElement("div")
+        tarjetaProducto.className = "tarjetaProducto"
+        tarjetaProducto.innerHTML = `
+            <h4>${producto.nombre} </h4>
+            <img class="imagen" src="images/${producto.rutaImagen}">
+            <h4>$${producto.precio} talle ${producto.talle} </h4>
+            <button id=${producto.id}>Agregar al carrito</button>
     `
-        contenedor.appendChild(producto)
+        contenedor.appendChild(tarjetaProducto)
+        let botonAgregarAlCarrito = document.getElementById(producto.id)
+        botonAgregarAlCarrito.addEventListener("click", agregarAlCarrito)
     })
+}
+
+function agregarAlCarrito(e) {
+    let productoBuscado = productos.find(producto => producto.id === Number(e.target.id))
+    carrito.push({
+        id: productoBuscado.id,
+        nombre: productoBuscado.nombre,
+        precio: productoBuscado.precio
+    })
+    console.log(carrito)
 }
 
 function filtrar(productos) {
@@ -91,7 +107,7 @@ function crearCategorias(arrayDeElementos, contenedorFiltros) {
         }
     })
 
-    
+
     categorias.forEach(categoria => {
         let boton = document.createElement("button")
         boton.id = categoria
@@ -99,6 +115,13 @@ function crearCategorias(arrayDeElementos, contenedorFiltros) {
         contenedorFiltros.appendChild(boton)
 
         let botonCapturado = document.getElementById(categoria)
-        botonCapturado.addEventListener("click", (e) => filtrarPorCategoria (e.target.id, arrayDeElementos))
+        botonCapturado.addEventListener("click", (e) => filtrarPorCategoria(e.target.id, arrayDeElementos))
     })
+}
+
+function mostrarOcultar() {
+    let padreContenedor = document.getElementById("productosContenedor")
+    let carrito = document.getElementById("carrito")
+    padreContenedor.classList.toggle("oculto")
+    carrito.classList.toggle("oculto")
 }
