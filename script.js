@@ -65,9 +65,11 @@ function crearTarjetas(array) {
         let tarjetaProducto = document.createElement("div")
         tarjetaProducto.className = "tarjetaProducto"
         tarjetaProducto.innerHTML = `
-            <h4>${producto.nombre} </h4>
-            <img class="imagen" src="images/${producto.rutaImagen}">
-            <h4>$${producto.precio} talle ${producto.talle} </h4>
+            
+            <img class="imagen" src="images/${producto.rutaImagen}"></img>
+            <h2>${producto.nombre}</h2>
+            <p>$${producto.precio}</p>
+            <p>talle ${producto.talle}</p>
             <button id=${producto.id}>Agregar al carrito</button>
     `
         contenedor.appendChild(tarjetaProducto)
@@ -84,6 +86,14 @@ function agregarAlCarrito(e) {
         precio: productoBuscado.precio
     })
     console.log(carrito)
+    renderizarCarrito ()
+}
+
+function renderizarCarrito () {
+    let carritoFisico = document.getElementById("carrito")
+    carrito.forEach(producto => {
+        carritoFisico.innerHTML += `<p>${producto.nombre} $${producto.precio}</p> ` 
+    })
 }
 
 function filtrar(productos) {
