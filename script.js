@@ -29,11 +29,13 @@ function catalogoPrincipal() {
         { id: 9002, nombre: "Kimono Rojo", categoria: "indumentaria", talle: "A1", unidades: 500, precio: 20000, rutaImagen: "gi_rojo.jpeg" },
         { id: 9003, nombre: "Kimono Rojo", categoria: "indumentaria", talle: "A2", unidades: 500, precio: 20000, rutaImagen: "gi_rojo.jpeg" },
         { id: 9004, nombre: "Kimono Rojo", categoria: "indumentaria", talle: "A3", unidades: 500, precio: 20000, rutaImagen: "gi_rojo.jpeg" },
-        { id: 11001, nombre: "Evento MMA", categoria: "eventos", unidades: 500, precio: 6000, rutaImagen: "" },
-        { id: 11001, nombre: "Seminario Leandro Le Fosse", categoria: "eventos", unidades: 500, precio: 2500, rutaImagen: "" },
-        { id: 12002, nombre: "Pase 8 clases", categoria: "cuota", unidades: 500, precio: 4500, rutaImagen: "" },
-        { id: 12003, nombre: "Pase 12 clases", categoria: "cuota", unidades: 500, precio: 6000, rutaImagen: "" },
-        { id: 12004, nombre: "Pase libre", categoria: "cuota", unidades: 500, precio: 10500, rutaImagen: "" }
+        { id: 9501, nombre: "Parches", categoria: "accesorios", unidades: 500, precio: 1000, rutaImagen: "parche.jpeg" },
+        { id: 9501, nombre: "Gorro lana", categoria: "accesorios", unidades: 500, precio: 5000, rutaImagen: "gorro_lana.jpeg" },
+        { id: 11001, nombre: "Evento MMA", categoria: "eventos", unidades: 500, precio: 6000, rutaImagen: "evento_mma.jpeg" },
+        { id: 11001, nombre: "Seminario Leandro Le Fosse", categoria: "eventos", unidades: 500, precio: 2500, rutaImagen: "evento_seminario.jpeg" },
+        { id: 12002, nombre: "Pase 8 clases", categoria: "cuota", unidades: 500, precio: 4500, rutaImagen: "logo.jpeg" },
+        { id: 12003, nombre: "Pase 12 clases", categoria: "cuota", unidades: 500, precio: 6000, rutaImagen: "logo.jpeg" },
+        { id: 12004, nombre: "Pase libre", categoria: "cuota", unidades: 500, precio: 10500, rutaImagen: "logo.jpeg" }
     ]
 
 
