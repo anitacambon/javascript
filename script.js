@@ -53,8 +53,6 @@ function catalogoPrincipal() {
 
     renderizar(productos, contenedor, carrito)
     renderizarCarrito(carritoJSON)
-    crearCategorias(arrayDeElementos)
-    crearTarjetas(arrayFiltrado)
 }
 
 catalogoPrincipal()
@@ -116,12 +114,20 @@ function renderizarCarrito(carritoJSON) {
         <p>ID: ${id} | Producto: ${nombre} | Precio: $${precioUnitario} | Cantidad: ${unidades} | Subtotal: $${subtotal}</p>\n`
         carritoFisico.appendChild(elementoDelCarrito)
     })
-
 }
 
-function filtrar(productos) {
+function mostrarOcultar() {
+    let padreContenedor = document.getElementById("productosContenedor")
+    let carrito = document.getElementById("contenedorCarrito")
+    padreContenedor.classList.toggle("oculto")
+    carrito.classList.toggle("oculto")
+}
+
+/* las siguientes funciones no las puedo ejecutar */
+
+function filtrar(arrayDeElementos, crearTarjetas) {
     let contenedor = document.getElementById("productos")
-    let arrayFiltrado = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
+    let arrayFiltrado = arrayDeElementos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
     crearTarjetas(arrayFiltrado)
 }
 
@@ -156,12 +162,7 @@ function filtrarPorCategoria(id, productos) {
 }
 
 
-function mostrarOcultar() {
-    let padreContenedor = document.getElementById("productosContenedor")
-    let carrito = document.getElementById("contenedorCarrito")
-    padreContenedor.classList.toggle("oculto")
-    carrito.classList.toggle("oculto")
-}
+
 
 /*
 Swal.fire({
