@@ -1,28 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Tienda</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Bienvenidos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
 </head>
 
 <body>
-    <h1>Tienda</h1>
-    <input id="buscador" placeholder="Ingrese nombre o categoría">
-    <button id="botonCarrito">Carrito</button>
-    <div id="productosContenedor">
-        <div class="container" id="contenedor">
-            <div id="categorias"></div>
-            <div class="row" id="productos"></div>
+
+    <header>
+
+        <div class="contenedorHeader-expand-lg container-fluid">
+            <img id="logoHeader" class="flex-grow-1" src="images/logo_header.jpeg" alt="Logo Magna">
+            <ul class="d-flex nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="./pages/actividades.html">Actividades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./pages/escuela.html">Escuela Artes Marciales</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./pages/horarios.html">Horarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./pages/tienda.html">Tienda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="./pages/contacto.html">Contacto</a>
+                </li>
+            </ul>
+            <div class="d-flex buscadorCarrito">
+                <input id="buscador" placeholder="Ingrese nombre o categoría">
+                <i id="botonCarrito" class="bi bi-cart4"></i>
+            </div>
         </div>
-    </div>
-    <div id="carrito" class="oculto"><i class="bi bi-cart3"></i></div>
+
+        <form class="d-flex buscadorCarrito" role="search">
+            <input class="form-control me-2" id="buscador" type="search" placeholder="Ingrese nombre o categoría"
+                aria-label="Search">
+        </form>
+
+    </header>
 
 
+    <main>
+        <h1>Tienda</h1>
 
 
+        <div id="productosContenedor">
+            <div id="contenedor">
+                <div id="categorias"></div>
+                <div id="productos"></div>
+            </div>
+        </div>
+
+        <div id="contenedorCarrito" class="oculto">
+            <div id="carrito"></div>
+            <button id="finalizarCompra">Finalizar Compra</button>
+        </div>
+
+
+    </main>
+
+    <footer>
+
+
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+
 </body>
+
 </html>
