@@ -3,9 +3,9 @@ function catalogoPrincipal() {
         { id: 1001, nombre: "Lycra Julia Pareja", categoria: "indumentaria", talle: "S", unidades: 500, precio: 5000, rutaImagen: "lycra_julia.jpeg" },
         { id: 1002, nombre: "Lycra Julia Pareja", categoria: "indumentaria", talle: "M", unidades: 500, precio: 5000, rutaImagen: "lycra_julia.jpeg" },
         { id: 1003, nombre: "Lycra Julia Pareja", categoria: "indumentaria", talle: "L", unidades: 500, precio: 5000, rutaImagen: "lycra_julia.jpeg" },
-        { id: 2001, nombre: "Lycra Team Le Fosse", categoria: "indumentaria", talle: "S", unidades: 500, precio: 5000, rutaImagen: "lycra_lean.jpeg" },
-        { id: 2002, nombre: "Lycra Team Le Fosse", categoria: "indumentaria", talle: "M", unidades: 500, precio: 5000, rutaImagen: "lycra_lean.jpeg" },
-        { id: 2003, nombre: "Lycra Team Le Fosse", categoria: "indumentaria", talle: "L", unidades: 500, precio: 5000, rutaImagen: "lycra_lean.jpeg" },
+        { id: 2001, nombre: "Lycra Le Fosse", categoria: "indumentaria", talle: "S", unidades: 500, precio: 5000, rutaImagen: "lycra_lean.jpeg" },
+        { id: 2002, nombre: "Lycra Le Fosse", categoria: "indumentaria", talle: "M", unidades: 500, precio: 5000, rutaImagen: "lycra_lean.jpeg" },
+        { id: 2003, nombre: "Lycra Le Fosse", categoria: "indumentaria", talle: "L", unidades: 500, precio: 5000, rutaImagen: "lycra_lean.jpeg" },
         { id: 3001, nombre: "Lycra Magna 2020", categoria: "indumentaria", talle: "S", unidades: 500, precio: 4000, rutaImagen: "lycra2020.jpeg" },
         { id: 3002, nombre: "Lycra Magna 2020", categoria: "indumentaria", talle: "M", unidades: 500, precio: 4000, rutaImagen: "lycra2020.jpeg" },
         { id: 3003, nombre: "Lycra Magna 2020", categoria: "indumentaria", talle: "L", unidades: 500, precio: 4000, rutaImagen: "lycra2020.jpeg" },
@@ -30,16 +30,6 @@ function catalogoPrincipal() {
         { id: 12004, nombre: "Pase libre", categoria: "cuota", unidades: 500, precio: 10500, rutaImagen: "logo.jpeg" }
     ]
 
-    
-    let arrayDeElementos = document.getElementById("categorias")
-
-    let buscador = document.getElementById("buscador")
-    buscador.addEventListener("input", () => filtrar(productos))
-
-    let botonesFiltrados = document.getElementsByClassName("categoria")
-    for (const botonFiltro of botonesFiltrados) {
-        botonFiltro.addEventListener("click", () => filtrarPorCategoria(id, productos))
-    }
 
     let botonCarrito = document.getElementById("botonCarrito")
     botonCarrito.addEventListener("click", mostrarOcultar)
@@ -51,11 +41,59 @@ function catalogoPrincipal() {
     let carrito = carritoJSON ? carritoJSON : []
     let contenedor = document.getElementById("contenedor")
 
+
+    let contenedorFiltros = document.getElementById("categorias")
+    let buscador = document.getElementById("buscador")
+    buscador.addEventListener("input", () => filtrar(productos))
+
+    let botonesFiltrados = document.getElementsByClassName("categoria")
+    for (const botonFiltro of botonesFiltrados) {
+        botonFiltro.addEventListener("click", filtrarPorCategoria)
+    }
+
+    crearCategorias(productos, contenedorFiltros)
     renderizar(productos, contenedor, carrito)
     renderizarCarrito(carritoJSON)
 }
 
 catalogoPrincipal()
+
+
+function filtrar(productos) {
+    let arrayFiltrado = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
+    renderizar(arrayFiltrado, contenedor, carrito)
+}
+
+function filtrarPorCategoria(id, productos) {
+    if (id === "Mostrar todos") {
+        renderizar(productos, contenedor)
+    } else {
+        let elementosFiltrados = productos.filter(producto => producto.categoria === id)
+        renderizar(elementosFiltrados, contenedor)
+    }
+
+}
+
+function crearCategorias(productos, contenedorFiltros) {
+    let categorias = ["Mostrar todos"]
+    productos.forEach(producto => {
+        if (!categorias.includes(producto.categoria)) {
+            categorias.push(producto.categoria)
+        }
+    })
+
+    categorias.forEach(categoria => {
+        let boton = document.createElement("button")
+        boton.id = categoria
+        boton.innerText = categoria
+        contenedorFiltros.appendChild(boton)
+
+        let botonCapturado = document.getElementById(categoria)
+        botonCapturado.addEventListener("click", (e) => filtrarPorCategoria(e.target.id, productos))
+    })
+}
+
+
 
 function finalizarCompra(carrito) {
     let carritoFisico = document.getElementById("carrito")
@@ -64,28 +102,32 @@ function finalizarCompra(carrito) {
     carrito = []
 }
 
-function renderizar(arrayDeElementos, contenedor, carrito) {
+
+function renderizar(productos, contenedor, carrito) {
     contenedor.innerHTML = ""
-    arrayDeElementos.forEach(({ rutaImagen, nombre, precio, talle, id }) => {
+    productos.forEach(({ rutaImagen, nombre, precio, talle, id }) => {
         let tarjetaProducto = document.createElement("div")
         tarjetaProducto.className = "tarjetaProducto"
-        tarjetaProducto.innerHTML = `
-            
+
+        let contenidoTarjeta = `
             <img class="imagen" src="images/${rutaImagen}"></img>
             <h2>${nombre}</h2>
-            <p class="precio" >$${precio}</p>
-            <p>talle ${talle}</p>
-            <button id=${id} type="button" class="btn btn-outline-warning">Agregar al carrito</button>
+            <p class="precio">$${precio}</p>
+            `
+        if (talle) {
+            contenidoTarjeta += `<p>talle ${talle}</p>`
+        }
+        contenidoTarjeta += `<button id=${id} type="button" class="btn btn-outline-warning">Agregar al carrito</button>`
 
-    `
+        tarjetaProducto.innerHTML = contenidoTarjeta
         contenedor.appendChild(tarjetaProducto)
         let botonAgregarAlCarrito = document.getElementById(id)
-        botonAgregarAlCarrito.addEventListener("click", () => agregarAlCarrito(arrayDeElementos, id, carrito))
+        botonAgregarAlCarrito.addEventListener("click", () => agregarAlCarrito(productos, id, carrito))
     })
 }
 
-function agregarAlCarrito(arrayDeElementos, id, carrito) {
-    let productoBuscado = arrayDeElementos.find(producto => producto.id === id)
+function agregarAlCarrito(productos, id, carrito) {
+    let productoBuscado = productos.find(producto => producto.id === id)
     let posicionProductoEnCarrito = carrito.findIndex(producto => producto.id === id)
     if (posicionProductoEnCarrito !== -1) {
         carrito[posicionProductoEnCarrito].unidades++
@@ -100,7 +142,7 @@ function agregarAlCarrito(arrayDeElementos, id, carrito) {
         })
     }
     localStorage.setItem("carrito", JSON.stringify(carrito))
-    renderizarCarrito(carrito)
+    renderizar(productos, carrito, contenedor)
 }
 
 
@@ -122,52 +164,3 @@ function mostrarOcultar() {
     padreContenedor.classList.toggle("oculto")
     carrito.classList.toggle("oculto")
 }
-
-/* las siguientes funciones no las puedo ejecutar */
-
-function filtrar(arrayDeElementos, crearTarjetas) {
-    let contenedor = document.getElementById("productos")
-    let arrayFiltrado = arrayDeElementos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
-    crearTarjetas(arrayFiltrado)
-}
-
-
-function crearCategorias(arrayDeElementos) {
-    let categorias = ["Mostrar todo"]
-    arrayDeElementos.forEach(producto => {
-        if (!categorias.includes(producto.categoria)) {
-            categorias.push(producto.categoria)
-        }
-    })
-    let contenedorFiltros = document.getElementById("categorias")
-    categorias.forEach(categoria => {
-        let boton = document.createElement("button")
-        boton.id = categoria
-        boton.innerText = categoria
-        contenedorFiltros.appendChild(boton)
-
-        let botonCapturado = document.getElementById(categoria)
-        botonCapturado.addEventListener("click", (e) => filtrarPorCategoria(e.target.id, catalogoPrincipal))
-    })
-}
-
-
-function filtrarPorCategoria(id, productos) {
-    if (id === "Mostrar todo") {
-        crearTarjetas(productos)
-    } else {
-        let categoriasFiltradas = productos.filter(producto => producto.categoria === id)
-        crearTarjetas(categoriasFiltradas)
-    }
-}
-
-
-
-
-/*
-Swal.fire({
-    title: 'Error!',
-    text: 'Do you want to continue',
-    icon: 'error',
-    confirmButtonText: 'Cool'
-  }) */

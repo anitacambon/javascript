@@ -46,7 +46,6 @@ h1 {
 
 .buscadorCarrito {
     display: flex;
-    justify-content: flex-end;
 }
 
 #buscador {
@@ -108,7 +107,7 @@ h1 {
     display: none;
 }
 
-.claseDelCarrito {
+.claseDelCarrito p{
     margin: 10px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
