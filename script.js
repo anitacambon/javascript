@@ -38,7 +38,7 @@ function catalogoPrincipal() {
     botonFinalizarCompra.addEventListener("click", () => finalizarCompra(carrito))
 
     let carritoJSON = JSON.parse(localStorage.getItem("carrito"))
-    let carrito = carritoJSON ? carritoJSON : []
+    let carrito = carritoJSON ? carritoJSON : ([])
     let contenedor = document.getElementById("contenedor")
 
 
@@ -99,7 +99,7 @@ function finalizarCompra(carrito) {
     let carritoFisico = document.getElementById("carrito")
     carritoFisico.innerHTML = ""
     localStorage.removeItem("carrito")
-    carrito = []
+    carrito = ([])
 }
 
 
@@ -141,8 +141,9 @@ function agregarAlCarrito(productos, id, carrito) {
             subtotal: productoBuscado.precio
         })
     }
+    lanzarTostada()
     localStorage.setItem("carrito", JSON.stringify(carrito))
-    renderizar(productos, carrito, contenedor)
+    renderizar(productos, contenedor, carrito)
 }
 
 
@@ -164,3 +165,12 @@ function mostrarOcultar() {
     padreContenedor.classList.toggle("oculto")
     carrito.classList.toggle("oculto")
 }
+
+function lanzarTostada () {
+    Toastify({
+        text: "Agregado al carrito",
+        className: "info",
+        duration: 1500
+    }).showToast()
+}
+
