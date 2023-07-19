@@ -24,7 +24,7 @@ function catalogoActualizado(saleTodoBien) {
         { id: 8004, nombre: "Kimono Azul", categoria: "indumentaria", talle: "A3", unidades: 500, precio: 20000, rutaImagen: "gi_azul.jpeg" },
         { id: 9501, nombre: "Gorro lana", categoria: "accesorios", unidades: 500, precio: 5000, rutaImagen: "gorro_lana.jpeg" },
         { id: 11001, nombre: "Evento MMA", categoria: "eventos", unidades: 500, precio: 6000, rutaImagen: "evento_mma.jpeg" },
-        { id: 11001, nombre: "Seminario Leandro", categoria: "eventos", unidades: 500, precio: 2500, rutaImagen: "evento_seminario.jpeg" },
+        { id: 11000, nombre: "Seminario Leandro", categoria: "eventos", unidades: 500, precio: 2500, rutaImagen: "evento_seminario.jpeg" },
         { id: 12002, nombre: "Pase 8 clases", categoria: "cuota", unidades: 500, precio: 4500, rutaImagen: "logo.jpeg" },
         { id: 12003, nombre: "Pase 12 clases", categoria: "cuota", unidades: 500, precio: 6000, rutaImagen: "logo.jpeg" },
         { id: 12004, nombre: "Pase libre", categoria: "cuota", unidades: 500, precio: 10500, rutaImagen: "logo.jpeg" }
@@ -44,17 +44,6 @@ catalogoActualizado(true)
 
 
 function catalogoPrincipal(productos) {
-    let botonCarrito = document.getElementById("botonCarrito")
-    botonCarrito.addEventListener("click", mostrarOcultar)
-
-    let botonFinalizarCompra = document.getElementById("finalizarCompra")
-    botonFinalizarCompra.addEventListener("click", () => finalizarCompra(carrito))
-
-    let carritoJSON = JSON.parse(localStorage.getItem("carrito"))
-    let carrito = carritoJSON ? carritoJSON : ([])
-    let contenedor = document.getElementById("contenedor")
-
-
     let contenedorFiltros = document.getElementById("categorias")
     let buscador = document.getElementById("buscador")
     buscador.addEventListener("input", () => filtrar(productos))
@@ -63,11 +52,19 @@ function catalogoPrincipal(productos) {
     for (const botonFiltro of botonesFiltrados) {
         botonFiltro.addEventListener("click", filtrarPorCategoria)
     }
+    let contenedor = document.getElementById("contenedor")
+    let botonCarrito = document.getElementById("botonCarrito")
+    botonCarrito.addEventListener("click", mostrarOcultar)
+
+    let botonFinalizarCompra = document.getElementById("finalizarCompra")
+    botonFinalizarCompra.addEventListener("click", () => finalizarCompra(carrito))
+
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || ([])
 
     crearCategorias(productos, contenedorFiltros)
     renderizar(productos, contenedor, carrito)
-    renderizarCarrito(carritoJSON)
 }
+
 
 
 
@@ -105,14 +102,6 @@ function crearCategorias(productos, contenedorFiltros) {
     })
 }
 
-
-
-function finalizarCompra(carrito) {
-    let carritoFisico = document.getElementById("carrito")
-    carritoFisico.innerHTML = ""
-    localStorage.removeItem("carrito")
-    carrito = ([])
-}
 
 
 function renderizar(productos, contenedor, carrito) {
@@ -155,15 +144,23 @@ function agregarAlCarrito(productos, id, carrito) {
     }
     lanzarTostada()
     localStorage.setItem("carrito", JSON.stringify(carrito))
-    renderizar(productos, contenedor, carrito)
+    renderizarCarrito(carrito)
+}
+
+function lanzarTostada() {
+    Toastify({
+        text: "Agregado al carrito",
+        className: "info",
+        duration: 1500
+    }).showToast()
 }
 
 
-function renderizarCarrito(carritoJSON) {
+function renderizarCarrito(carrito) {
     let carritoFisico = document.getElementById("carrito")
     carritoFisico.classList.add("claseDelCarrito")
     carritoFisico.innerHTML = ""
-    carritoJSON.forEach(({ id, nombre, precioUnitario, unidades, subtotal }) => {
+    carrito.forEach(({ id, nombre, precioUnitario, unidades, subtotal }) => {
         let elementoDelCarrito = document.createElement("div")
         elementoDelCarrito.innerHTML = `
         <p>ID: ${id} | Producto: ${nombre} | Precio: $${precioUnitario} | Cantidad: ${unidades} | Subtotal: $${subtotal}</p>\n`
@@ -178,11 +175,10 @@ function mostrarOcultar() {
     carrito.classList.toggle("oculto")
 }
 
-function lanzarTostada() {
-    Toastify({
-        text: "Agregado al carrito",
-        className: "info",
-        duration: 1500
-    }).showToast()
-}
 
+function finalizarCompra(carritoJSON) {
+    let carrito = document.getElementById("carrito")
+    carrito.innerHTML = ""
+    localStorage.removeItem("carrito")
+    carritoJSON = ([])
+}
