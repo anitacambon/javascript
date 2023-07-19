@@ -1,4 +1,4 @@
-function catalogoPrincipal() {
+function catalogoActualizado(saleTodoBien) {
     let productos = [
         { id: 1001, nombre: "Lycra Julia Pareja", categoria: "indumentaria", talle: "S", unidades: 500, precio: 5000, rutaImagen: "lycra_julia.jpeg" },
         { id: 1002, nombre: "Lycra Julia Pareja", categoria: "indumentaria", talle: "M", unidades: 500, precio: 5000, rutaImagen: "lycra_julia.jpeg" },
@@ -12,7 +12,7 @@ function catalogoPrincipal() {
         { id: 4001, nombre: "Musculosa Boxing", categoria: "indumentaria", talle: "S", unidades: 500, precio: 3500, rutaImagen: "musc_box.jpeg" },
         { id: 4002, nombre: "Musculosa Boxing", categoria: "indumentaria", talle: "M", unidades: 500, precio: 3500, rutaImagen: "musc_box.jpeg" },
         { id: 4003, nombre: "Musculosa Boxing", categoria: "indumentaria", talle: "L", unidades: 500, precio: 3500, rutaImagen: "musc_box.jpeg" },
-        { id: 5001, nombre: "Parche Logo Magna", categoria: "accesorios", unidades: 500, precio: 1000, rutaImagen: "parche.jpeg" },
+        { id: 5001, nombre: "Parche Magna", categoria: "accesorios", unidades: 500, precio: 1000, rutaImagen: "parche.jpeg" },
         { id: 6001, nombre: "Kit Kick Boxing", categoria: "accesorios", unidades: 500, precio: 7000, rutaImagen: "kit_kb.jpeg" },
         { id: 7001, nombre: "Kimono Negro", categoria: "indumentaria", talle: "A0", unidades: 500, precio: 20000, rutaImagen: "gi_negro.jpeg" },
         { id: 7002, nombre: "Kimono Negro", categoria: "indumentaria", talle: "A1", unidades: 500, precio: 20000, rutaImagen: "gi_negro.jpeg" },
@@ -31,6 +31,19 @@ function catalogoPrincipal() {
     ]
 
 
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            saleTodoBien ? resolve(productos) : reject("Algo salió mal")
+        }, 0)
+    })
+}
+
+catalogoActualizado(true)
+    .then(respuesta => catalogoPrincipal(respuesta))
+    .catch(mensajeError => alert(mensajeError))
+
+
+function catalogoPrincipal(productos) {
     let botonCarrito = document.getElementById("botonCarrito")
     botonCarrito.addEventListener("click", mostrarOcultar)
 
@@ -56,7 +69,6 @@ function catalogoPrincipal() {
     renderizarCarrito(carritoJSON)
 }
 
-catalogoPrincipal()
 
 
 function filtrar(productos) {
@@ -166,7 +178,7 @@ function mostrarOcultar() {
     carrito.classList.toggle("oculto")
 }
 
-function lanzarTostada () {
+function lanzarTostada() {
     Toastify({
         text: "Agregado al carrito",
         className: "info",
