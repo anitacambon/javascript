@@ -49,13 +49,13 @@ h1 {
 }
 
 #buscador {
+    margin-top: 15px;
     width: 20rem;
     height: 3rem;
 }
 
 .bi-cart4 {
     font-size: 3em;
-    
 }
 
 
@@ -98,7 +98,10 @@ h1 {
 }
 
 #carrito {
-    border: 2px solid black;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 70vw;
     height: 40vh;
 }
@@ -110,7 +113,13 @@ h1 {
 .claseDelCarrito p{
     margin: 10px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 1em;
 }
+
+#finalizarCompra {
+    margin: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/*border: 2px solid black;

@@ -50,8 +50,9 @@ function catalogoPrincipal(productos) {
 
     let botonesFiltrados = document.getElementsByClassName("categoria")
     for (const botonFiltro of botonesFiltrados) {
-        botonFiltro.addEventListener("click", filtrarPorCategoria)
+        botonFiltro.addEventListener("click", () => filtrarPorCategoria(productos))
     }
+
     let contenedor = document.getElementById("contenedor")
     let botonCarrito = document.getElementById("botonCarrito")
     botonCarrito.addEventListener("click", mostrarOcultar)
@@ -69,21 +70,21 @@ function catalogoPrincipal(productos) {
 
 
 function filtrar(productos) {
-    let arrayFiltrado = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
-    renderizar(arrayFiltrado, contenedor, carrito)
+    let elementosFiltrados = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
+    renderizar(elementosFiltrados, contenedor)
 }
 
 function filtrarPorCategoria(id, productos) {
     if (id === "Mostrar todos") {
-        renderizar(productos, contenedor)
+        renderizar(productos, contenedor, carrito)
     } else {
         let elementosFiltrados = productos.filter(producto => producto.categoria === id)
-        renderizar(elementosFiltrados, contenedor)
+        renderizar(elementosFiltrados, contenedor, carrito)
     }
 
 }
 
-function crearCategorias(productos, contenedorFiltros) {
+function crearCategorias(productos, elementosFiltrados) {
     let categorias = ["Mostrar todos"]
     productos.forEach(producto => {
         if (!categorias.includes(producto.categoria)) {
@@ -95,7 +96,7 @@ function crearCategorias(productos, contenedorFiltros) {
         let boton = document.createElement("button")
         boton.id = categoria
         boton.innerText = categoria
-        contenedorFiltros.appendChild(boton)
+        elementosFiltrados.appendChild(boton)
 
         let botonCapturado = document.getElementById(categoria)
         botonCapturado.addEventListener("click", (e) => filtrarPorCategoria(e.target.id, productos))
@@ -163,10 +164,20 @@ function renderizarCarrito(carrito) {
     carrito.forEach(({ id, nombre, precioUnitario, unidades, subtotal }) => {
         let elementoDelCarrito = document.createElement("div")
         elementoDelCarrito.innerHTML = `
-        <p>ID: ${id} | Producto: ${nombre} | Precio: $${precioUnitario} | Cantidad: ${unidades} | Subtotal: $${subtotal}</p>\n`
+        <p>ID: ${id} | Producto: ${nombre} | Precio: $${precioUnitario} | Cantidad: ${unidades} | Subtotal: $${subtotal} <button type="button" class="bi bi-trash3"></button></p>\n`
         carritoFisico.appendChild(elementoDelCarrito)
     })
 }
+
+/*
+function calcularSumaTotal(carritoFisico) {
+    let suma = 0
+    for (let i = 0; i < carritoFisico.length; i++) {
+        suma += carritoFisico[i].subtotal
+    }suma(subtotal)
+}*/
+
+
 
 function mostrarOcultar() {
     let padreContenedor = document.getElementById("productosContenedor")
