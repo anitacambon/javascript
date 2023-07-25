@@ -1,16 +1,26 @@
-const urlLocal = '../productos.json'
+const urlLocal = './productos.json'
 let productos = []
+let contenedor = document.getElementById("contenedor")
 
 fetch(urlLocal)
     .then(response => response.json())
-    .then(contenedor => {
-        productos.push(contenedor)
+    .then(data => {
+        productos = data.productos
+        console.log(productos)
         renderizar(productos, contenedor, carrito)
+        
     })
     .catch(mensajeError => alert(mensajeError))
 
+function mostrarOcultar() {
+    let padreContenedor = document.getElementById("productosContenedor")
+    let carrito = document.getElementById("contenedorCarrito")
+    padreContenedor.classList.toggle("oculto")
+    carrito.classList.toggle("oculto")
+}
 
 function catalogoPrincipal(productos) {
+    crearCategorias(productos, contenedorFiltros)
     let contenedorFiltros = document.getElementById("categorias")
     let buscador = document.getElementById("buscador")
     buscador.addEventListener("input", () => filtrar(productos))
@@ -20,19 +30,19 @@ function catalogoPrincipal(productos) {
         botonFiltro.addEventListener("click", () => filtrarPorCategoria(productos))
     }
 
-    let contenedor = document.getElementById("contenedor")
+    
     let botonCarrito = document.getElementById("botonCarrito")
     botonCarrito.addEventListener("click", mostrarOcultar)
+
 
     let botonFinalizarCompra = document.getElementById("finalizarCompra")
     botonFinalizarCompra.addEventListener("click", () => finalizarCompra(carrito))
 
     let carrito = JSON.parse(localStorage.getItem("carrito")) || ([])
 
-    renderizar(productos, contenedor, carrito)
-    crearCategorias(productos, contenedorFiltros)
-}
 
+
+}
 
 
 
@@ -51,7 +61,7 @@ function filtrarPorCategoria(id, productos) {
 
 }
 
-function crearCategorias(productos, elementosFiltrados) {
+function crearCategorias(productos) {
     let categorias = ["Mostrar todos"]
     productos.forEach(producto => {
         if (!categorias.includes(producto.categoria)) {
@@ -71,9 +81,8 @@ function crearCategorias(productos, elementosFiltrados) {
 }
 
 
-
-function renderizar(productos, contenedor, carrito) {
-    contenedor.innerHTML = ""
+function renderizar(productos, elementosFiltrados, carrito) {
+    elementosFiltrados.innerHTML = ""
     productos.forEach(({ rutaImagen, nombre, precio, talle, id }) => {
         let tarjetaProducto = document.createElement("div")
         tarjetaProducto.className = "tarjetaProducto"
@@ -89,16 +98,19 @@ function renderizar(productos, contenedor, carrito) {
         contenidoTarjeta += `<button id=${id} type="button" class="btn btn-outline-warning">Agregar al carrito</button>`
 
         tarjetaProducto.innerHTML = contenidoTarjeta
-        contenedor.appendChild(tarjetaProducto)
+        elementosFiltrados.appendChild(tarjetaProducto)
         let botonAgregarAlCarrito = document.getElementById(id)
         botonAgregarAlCarrito.addEventListener("click", () => agregarAlCarrito(productos, id, carrito))
     })
 }
 
-function agregarAlCarrito(e) {
-    let productoBuscado = productos.find(producto => producto.id === e.currentTarget.id)
-    let posicionProductoEnCarrito = carrito.findIndex(producto => producto.id === productoBuscado.id)
+function agregarAlCarrito(productos, id, carrito) {
+    let productoBuscado = productos.find(producto => producto.id === id)
+    let posicionProductoEnCarrito = carrito.findIndex(producto => producto.id === id)
     if (posicionProductoEnCarrito !== -1) {
+        carrito[posicionProductoEnCarrito].unidades++
+        carrito[posicionProductoEnCarrito].subtotal = carrito[posicionProductoEnCarrito].unidades * carrito[posicionProductoEnCarrito].precioUnitario
+    } else {
         carrito.push({
             id: productoBuscado.id,
             nombre: productoBuscado.nombre,
@@ -106,9 +118,6 @@ function agregarAlCarrito(e) {
             unidades: 1,
             subtotal: productoBuscado.precio
         })
-    } else {
-        carrito[posicionProductoEnCarrito].unidades++
-        carrito[posicionProductoEnCarrito].subtotal = carrito[posicionProductoEnCarrito].unidades * carrito[posicionProductoEnCarrito].precioUnitario
     }
     lanzarTostada()
     localStorage.setItem("carrito", JSON.stringify(carrito))
@@ -122,7 +131,6 @@ function lanzarTostada() {
         duration: 1500
     }).showToast()
 }
-
 
 function renderizarCarrito(carrito) {
     let total = 0
@@ -150,12 +158,6 @@ function renderizarCarrito(carrito) {
 }
 /*<button ${id} type="button" class="bi bi-trash3"></button>*/
 
-function mostrarOcultar() {
-    let padreContenedor = document.getElementById("productosContenedor")
-    let carrito = document.getElementById("contenedorCarrito")
-    padreContenedor.classList.toggle("oculto")
-    carrito.classList.toggle("oculto")
-}
 
 
 function finalizarCompra(carritoJSON) {
@@ -164,4 +166,11 @@ function finalizarCompra(carritoJSON) {
     localStorage.removeItem("carrito")
     carritoJSON = ([])
 }
+
+
+
+
+/*<button ${id} type="button" class="bi bi-trash3"></button>*/
+
+
 
