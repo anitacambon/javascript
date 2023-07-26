@@ -1,5 +1,6 @@
 const urlLocal = './productos.json'
 let productos = []
+let carrito = JSON.parse(localStorage.getItem("carrito")) || ([])
 
 catalogoPrincipal()
 crearCategorias()
@@ -30,8 +31,6 @@ function catalogoPrincipal() {
     let botonFinalizarCompra = document.getElementById("finalizarCompra")
     botonFinalizarCompra.addEventListener("click", () => finalizarCompra(carrito))
 
-    let carrito = JSON.parse(localStorage.getItem("carrito")) || ([])
-
 
     crearCategorias(productos)
     llamarProductos()
@@ -41,7 +40,6 @@ function catalogoPrincipal() {
 function filtrar(productos) {
     let elementosFiltrados = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
     renderizar(elementosFiltrados, contenedor)
-    llamarProductos()
 }
 
 function filtrarPorCategoria(id, productos) {
@@ -51,11 +49,13 @@ function filtrarPorCategoria(id, productos) {
         let elementosFiltrados = productos.filter(producto => producto.categoria === id)
         renderizar(elementosFiltrados, contenedor, carrito)
     }
-    llamarProductos()
 }
 
 
 function crearCategorias(productos) {
+    let contenedorFiltros = document.getElementById("categorias")
+    contenedorFiltros.innerHTML = ""
+
     let categorias = ["Mostrar todos"]
     productos.forEach(producto => {
         if (!categorias.includes(producto.categoria)) {
@@ -67,11 +67,10 @@ function crearCategorias(productos) {
         let boton = document.createElement("button")
         boton.id = categoria
         boton.innerText = categoria
-        elementosFiltrados.appendChild(boton)
+        contenedorFiltros.appendChild(boton)
         let botonCapturado = document.getElementById(categoria)
         botonCapturado.addEventListener("click", (e) => filtrarPorCategoria(e.target.id, productos))
     })
-    llamarProductos(productos)
 }
 
 
@@ -97,7 +96,6 @@ function renderizar(productos, elementosFiltrados, carrito) {
         let botonAgregarAlCarrito = document.getElementById(id)
         botonAgregarAlCarrito.addEventListener("click", () => agregarAlCarrito(productos, id, carrito))
     })
-    llamarProductos()
 }
 
 function agregarAlCarrito(productos, id, carrito) {
@@ -166,7 +164,7 @@ function renderizarCarrito(carrito) {
 /*<button ${id} type="button" class="bi bi-trash3"></button>*/
 
 
-function finalizarCompra(carritoJSON) {
+function finalizarCompra() {
     let carrito = document.getElementById("carrito")
     carrito.innerHTML = ""
     localStorage.removeItem("carrito")
