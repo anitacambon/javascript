@@ -1,39 +1,31 @@
 const urlLocal = './productos.json'
 let productos = []
-let contenedor = document.getElementById("contenedor")
 
-fetch(urlLocal)
-    .then(response => response.json())
-    .then(data => {
-        productos = data.productos
-        console.log(productos)
-        renderizar(productos, contenedor, carrito)
-        
-    })
-    .catch(mensajeError => alert(mensajeError))
+catalogoPrincipal()
+crearCategorias()
+llamarProductos()
 
-function mostrarOcultar() {
-    let padreContenedor = document.getElementById("productosContenedor")
-    let carrito = document.getElementById("contenedorCarrito")
-    padreContenedor.classList.toggle("oculto")
-    carrito.classList.toggle("oculto")
+function llamarProductos() {
+    fetch(urlLocal)
+        .then(response => response.json())
+        .then(data => {
+            productos = data.productos
+            renderizar(productos, contenedor, carrito)
+        })
+        .catch(mensajeError => contenedor.innerHTML = '<p>Algo salió mal</p>')
 }
 
-function catalogoPrincipal(productos) {
-    crearCategorias(productos, contenedorFiltros)
-    let contenedorFiltros = document.getElementById("categorias")
+function catalogoPrincipal() {
     let buscador = document.getElementById("buscador")
     buscador.addEventListener("input", () => filtrar(productos))
 
     let botonesFiltrados = document.getElementsByClassName("categoria")
     for (const botonFiltro of botonesFiltrados) {
-        botonFiltro.addEventListener("click", () => filtrarPorCategoria(productos))
+        botonFiltro.addEventListener("click", () => filtrarPorCategoria(id, productos))
     }
 
-    
     let botonCarrito = document.getElementById("botonCarrito")
     botonCarrito.addEventListener("click", mostrarOcultar)
-
 
     let botonFinalizarCompra = document.getElementById("finalizarCompra")
     botonFinalizarCompra.addEventListener("click", () => finalizarCompra(carrito))
@@ -41,14 +33,15 @@ function catalogoPrincipal(productos) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || ([])
 
 
-
+    crearCategorias(productos)
+    llamarProductos()
 }
-
 
 
 function filtrar(productos) {
     let elementosFiltrados = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
     renderizar(elementosFiltrados, contenedor)
+    llamarProductos()
 }
 
 function filtrarPorCategoria(id, productos) {
@@ -58,8 +51,9 @@ function filtrarPorCategoria(id, productos) {
         let elementosFiltrados = productos.filter(producto => producto.categoria === id)
         renderizar(elementosFiltrados, contenedor, carrito)
     }
-
+    llamarProductos()
 }
+
 
 function crearCategorias(productos) {
     let categorias = ["Mostrar todos"]
@@ -74,11 +68,12 @@ function crearCategorias(productos) {
         boton.id = categoria
         boton.innerText = categoria
         elementosFiltrados.appendChild(boton)
-
         let botonCapturado = document.getElementById(categoria)
         botonCapturado.addEventListener("click", (e) => filtrarPorCategoria(e.target.id, productos))
     })
+    llamarProductos(productos)
 }
+
 
 
 function renderizar(productos, elementosFiltrados, carrito) {
@@ -102,9 +97,11 @@ function renderizar(productos, elementosFiltrados, carrito) {
         let botonAgregarAlCarrito = document.getElementById(id)
         botonAgregarAlCarrito.addEventListener("click", () => agregarAlCarrito(productos, id, carrito))
     })
+    llamarProductos()
 }
 
 function agregarAlCarrito(productos, id, carrito) {
+
     let productoBuscado = productos.find(producto => producto.id === id)
     let posicionProductoEnCarrito = carrito.findIndex(producto => producto.id === id)
     if (posicionProductoEnCarrito !== -1) {
@@ -122,6 +119,7 @@ function agregarAlCarrito(productos, id, carrito) {
     lanzarTostada()
     localStorage.setItem("carrito", JSON.stringify(carrito))
     renderizarCarrito(carrito)
+    llamarProductos(productos, carrito)
 }
 
 function lanzarTostada() {
@@ -130,6 +128,14 @@ function lanzarTostada() {
         className: "info",
         duration: 1500
     }).showToast()
+}
+
+function mostrarOcultar() {
+    let padreContenedor = document.getElementById("productosContenedor")
+    let carrito = document.getElementById("contenedorCarrito")
+    padreContenedor.classList.toggle("oculto")
+    carrito.classList.toggle("oculto")
+    llamarProductos()
 }
 
 function renderizarCarrito(carrito) {
@@ -155,9 +161,9 @@ function renderizarCarrito(carrito) {
     })
     carritoFisico.innerHTML += `
     <li class= "totalCarrito">Total $${total}</li>`
+    llamarProductos()
 }
 /*<button ${id} type="button" class="bi bi-trash3"></button>*/
-
 
 
 function finalizarCompra(carritoJSON) {
@@ -166,7 +172,6 @@ function finalizarCompra(carritoJSON) {
     localStorage.removeItem("carrito")
     carritoJSON = ([])
 }
-
 
 
 
