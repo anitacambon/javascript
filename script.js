@@ -3,7 +3,7 @@ let productos = []
 let carrito = JSON.parse(localStorage.getItem("carrito")) || ([])
 
 catalogoPrincipal()
-crearCategorias()
+crearCategorias(productos)
 llamarProductos()
 
 function llamarProductos() {
@@ -39,15 +39,17 @@ function catalogoPrincipal() {
 
 function filtrar(productos) {
     let elementosFiltrados = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
-    renderizar(elementosFiltrados, contenedor)
+    renderizar(elementosFiltrados, document.getElementById("productos"), carrito)
 }
 
-function filtrarPorCategoria(id, productos) {
+function filtrarPorCategoria(id, productos, carrito) {
+    let contenedorFiltrado = document.createElement("div")
+    contenedorFiltrado.className = "contenedorFiltrado"
     if (id === "Mostrar todos") {
-        renderizar(productos, contenedor, carrito)
+        renderizar(productos, document.getElementById("productos"), carrito)
     } else {
         let elementosFiltrados = productos.filter(producto => producto.categoria === id)
-        renderizar(elementosFiltrados, contenedor, carrito)
+        renderizar(elementosFiltrados, document.getElementById("productos"), carrito)
     }
 }
 
@@ -99,7 +101,6 @@ function renderizar(productos, elementosFiltrados, carrito) {
 }
 
 function agregarAlCarrito(productos, id, carrito) {
-
     let productoBuscado = productos.find(producto => producto.id === id)
     let posicionProductoEnCarrito = carrito.findIndex(producto => producto.id === id)
     if (posicionProductoEnCarrito !== -1) {
@@ -107,6 +108,7 @@ function agregarAlCarrito(productos, id, carrito) {
         carrito[posicionProductoEnCarrito].subtotal = carrito[posicionProductoEnCarrito].unidades * carrito[posicionProductoEnCarrito].precioUnitario
     } else {
         carrito.push({
+            rutaImagen: productoBuscado.rutaImagen,
             id: productoBuscado.id,
             nombre: productoBuscado.nombre,
             precioUnitario: productoBuscado.precio,
@@ -146,12 +148,13 @@ function renderizarCarrito(carrito) {
     let listaCarrito = document.createElement("ul")
     listaCarrito.classList.add("cart-list")
 
-    carrito.forEach(({ id, nombre, precioUnitario, unidades, subtotal }) => {
+    carrito.forEach(({ rutaImagen, nombre, precioUnitario, unidades, subtotal, id }) => {
         let elementoDelCarrito = document.createElement("li")
         elementoDelCarrito.classList.add("cart-item")
         elementoDelCarrito.innerHTML += `
-            <p>Producto: ${nombre} | Precio: $${precioUnitario} | Cantidad: ${unidades} | Subtotal: $${subtotal}</p>
-        `
+            <img class="imagenItemCarrito" src="images/${rutaImagen}"></img><p>ID: ${id} | Producto: ${nombre} | Precio: $${precioUnitario} | Cantidad: ${unidades} | Subtotal: $${subtotal}</p>
+            `
+
         listaCarrito.appendChild(elementoDelCarrito)
         carritoFisico.appendChild(elementoDelCarrito)
         total += subtotal
@@ -161,19 +164,54 @@ function renderizarCarrito(carrito) {
     <li class= "totalCarrito">Total $${total}</li>`
     llamarProductos()
 }
-/*<button ${id} type="button" class="bi bi-trash3"></button>*/
 
 
 function finalizarCompra() {
-    let carrito = document.getElementById("carrito")
     carrito.innerHTML = ""
     localStorage.removeItem("carrito")
+    carrito = ([])
     carritoJSON = ([])
+    graciasPorSuCompra()
+    renderizarCarrito(carrito)
 }
 
-
+function graciasPorSuCompra() {
+    Swal.fire(
+        'Gracias por tu compra!',
+        'Te enviamos un email con los pasos a seguir',
+        'success'
+    )
+}
 
 /*<button ${id} type="button" class="bi bi-trash3"></button>*/
 
 
 
+/*
+function modificarCantidad(event, cantidad) {
+    let productoId = parseInt(event.target.dataset.id)
+    let productoEnCarrito = carrito.find((producto) => producto.id === productoId)
+
+    if (productoEnCarrito && productoEnCarrito.cantidad + cantidad >= 1) {
+        productoEnCarrito.cantidad += cantidad
+    }
+}
+
+function eliminarDelCarrito(event) {
+    let productoId = parseInt(event.target.dataset.id)
+    let productoEliminar = carrito.findIndex((producto) => producto.id === productoId)
+
+    if (productoEliminar !== -1) {
+        carrito.splice(productoEliminar, 1)
+        localStorage.setItem('carrito', JSON.stringify(carrito))
+
+        if (carrito.length === 0) {
+            localStorage.removeItem('carrito')
+        } else {
+            renderizarCarrito()
+        }
+    } else {
+        renderizarCarrito()
+    }
+}
+*/

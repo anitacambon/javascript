@@ -68,6 +68,13 @@ h1 {
     grid-template-rows: auto;
 }
 
+.contenedorFiltrado {
+    margin: 10px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto;
+}
+
 .tarjetaProducto {
     display: flex;
     flex-direction: column;
@@ -113,6 +120,10 @@ h1 {
     font-size: 1em;
 }
 
+.imagenItemCarrito {
+    height: 3em;
+}
+
 .cart-list {
     margin: 10px;
     padding: 10px;
@@ -120,7 +131,7 @@ h1 {
 
 .cart-item {
     padding: 10px;
-    width: 70vw;
+    width: 90vw;
     border-bottom: 1px solid rgb(78, 9, 143);
     text-align: center;
     justify-content: space-between;
