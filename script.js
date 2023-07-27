@@ -17,6 +17,7 @@ function llamarProductos() {
 }
 
 function catalogoPrincipal() {
+    let contenedorFiltros = document.getElementById("categorias")
     let buscador = document.getElementById("buscador")
     buscador.addEventListener("input", () => filtrar(productos))
 
@@ -36,21 +37,71 @@ function catalogoPrincipal() {
     llamarProductos()
 }
 
+function filtrar(productos) {
+    let arrayFiltrado = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
+    renderizar(arrayFiltrado, contenedor, carrito)
+}
+/*
+function filtrarPorCategoria(id, productos) {
+    if (id === "Mostrar todos") {
+        renderizar(productos, contenedor)
+    } else {
+        let elementosFiltrados = productos.filter(producto => producto.categoria === id)
+        renderizar(elementosFiltrados, contenedor)
+    }
+
+}
+
+function crearCategorias(productos, contenedorFiltros) {
+    let categorias = ["Mostrar todos"]
+    productos.forEach(producto => {
+        if (!categorias.includes(producto.categoria)) {
+            categorias.push(producto.categoria)
+        }
+    })
+
+    categorias.forEach(categoria => {
+        let contenedorFiltros = document.getElementById("categorias")
+        let boton = document.createElement("button")
+        boton.id = categoria
+        boton.innerText = categoria
+        contenedorFiltros.appendChild(boton)
+
+        let botonCapturado = document.getElementById(categoria)
+        botonCapturado.addEventListener("click", (e) => filtrarPorCategoria(e.target.id, productos))
+    })
+}*/
+
+
+
+/*
 
 function filtrar(productos) {
+    let contenedorFiltrado = document.createElement("div")
+    contenedorFiltrado.className = "contenedorFiltrado"
     let elementosFiltrados = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
     renderizar(elementosFiltrados, document.getElementById("productos"), carrito)
-}
+}*/
 
 function filtrarPorCategoria(id, productos, carrito) {
     let contenedorFiltrado = document.createElement("div")
     contenedorFiltrado.className = "contenedorFiltrado"
     if (id === "Mostrar todos") {
-        renderizar(productos, document.getElementById("productos"), carrito)
+        renderizar(contenedorFiltrado, contenedor, carrito)
     } else {
         let elementosFiltrados = productos.filter(producto => producto.categoria === id)
-        renderizar(elementosFiltrados, document.getElementById("productos"), carrito)
+        renderizar(elementosFiltrados, contenedor, carrito)
     }
+}
+
+function filtrarPorCategoria(id, productos) {
+    if (id === "Mostrar todos") {
+        renderizar(productos, contenedor, carrito)
+    } else {
+        let elementosFiltrados = productos.filter(producto => producto.categoria === id)
+        renderizar(elementosFiltrados, contenedor, carrito)
+    }
+
 }
 
 
@@ -71,10 +122,10 @@ function crearCategorias(productos) {
         boton.innerText = categoria
         contenedorFiltros.appendChild(boton)
         let botonCapturado = document.getElementById(categoria)
-        botonCapturado.addEventListener("click", (e) => filtrarPorCategoria(e.target.id, productos))
+        botonCapturado.addEventListener("click", () => filtrarPorCategoria(id, productos))
     })
+    renderizar(productos, categorias, carrito)
 }
-
 
 
 function renderizar(productos, elementosFiltrados, carrito) {
