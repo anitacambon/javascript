@@ -3,7 +3,6 @@ let productos = []
 let carrito = JSON.parse(localStorage.getItem("carrito")) || ([])
 
 catalogoPrincipal()
-crearCategorias(productos)
 llamarProductos()
 
 function llamarProductos() {
@@ -17,14 +16,8 @@ function llamarProductos() {
 }
 
 function catalogoPrincipal() {
-    let contenedorFiltros = document.getElementById("categorias")
     let buscador = document.getElementById("buscador")
     buscador.addEventListener("input", () => filtrar(productos))
-
-    let botonesFiltrados = document.getElementsByClassName("categoria")
-    for (const botonFiltro of botonesFiltrados) {
-        botonFiltro.addEventListener("click", () => filtrarPorCategoria(id, productos))
-    }
 
     let botonCarrito = document.getElementById("botonCarrito")
     botonCarrito.addEventListener("click", mostrarOcultar)
@@ -32,99 +25,12 @@ function catalogoPrincipal() {
     let botonFinalizarCompra = document.getElementById("finalizarCompra")
     botonFinalizarCompra.addEventListener("click", () => finalizarCompra(carrito))
 
-
-    crearCategorias(productos)
     llamarProductos()
 }
 
 function filtrar(productos) {
     let arrayFiltrado = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
     renderizar(arrayFiltrado, contenedor, carrito)
-}
-/*
-function filtrarPorCategoria(id, productos) {
-    if (id === "Mostrar todos") {
-        renderizar(productos, contenedor)
-    } else {
-        let elementosFiltrados = productos.filter(producto => producto.categoria === id)
-        renderizar(elementosFiltrados, contenedor)
-    }
-
-}
-
-function crearCategorias(productos, contenedorFiltros) {
-    let categorias = ["Mostrar todos"]
-    productos.forEach(producto => {
-        if (!categorias.includes(producto.categoria)) {
-            categorias.push(producto.categoria)
-        }
-    })
-
-    categorias.forEach(categoria => {
-        let contenedorFiltros = document.getElementById("categorias")
-        let boton = document.createElement("button")
-        boton.id = categoria
-        boton.innerText = categoria
-        contenedorFiltros.appendChild(boton)
-
-        let botonCapturado = document.getElementById(categoria)
-        botonCapturado.addEventListener("click", (e) => filtrarPorCategoria(e.target.id, productos))
-    })
-}*/
-
-
-
-/*
-
-function filtrar(productos) {
-    let contenedorFiltrado = document.createElement("div")
-    contenedorFiltrado.className = "contenedorFiltrado"
-    let elementosFiltrados = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value) || producto.categoria.toLowerCase().includes(buscador.value))
-    renderizar(elementosFiltrados, document.getElementById("productos"), carrito)
-}*/
-
-function filtrarPorCategoria(id, productos, carrito) {
-    let contenedorFiltrado = document.createElement("div")
-    contenedorFiltrado.className = "contenedorFiltrado"
-    if (id === "Mostrar todos") {
-        renderizar(contenedorFiltrado, contenedor, carrito)
-    } else {
-        let elementosFiltrados = productos.filter(producto => producto.categoria === id)
-        renderizar(elementosFiltrados, contenedor, carrito)
-    }
-}
-
-function filtrarPorCategoria(id, productos) {
-    if (id === "Mostrar todos") {
-        renderizar(productos, contenedor, carrito)
-    } else {
-        let elementosFiltrados = productos.filter(producto => producto.categoria === id)
-        renderizar(elementosFiltrados, contenedor, carrito)
-    }
-
-}
-
-
-function crearCategorias(productos) {
-    let contenedorFiltros = document.getElementById("categorias")
-    contenedorFiltros.innerHTML = ""
-
-    let categorias = ["Mostrar todos"]
-    productos.forEach(producto => {
-        if (!categorias.includes(producto.categoria)) {
-            categorias.push(producto.categoria)
-        }
-    })
-
-    categorias.forEach(categoria => {
-        let boton = document.createElement("button")
-        boton.id = categoria
-        boton.innerText = categoria
-        contenedorFiltros.appendChild(boton)
-        let botonCapturado = document.getElementById(categoria)
-        botonCapturado.addEventListener("click", () => filtrarPorCategoria(id, productos))
-    })
-    renderizar(productos, categorias, carrito)
 }
 
 
@@ -181,6 +87,7 @@ function lanzarTostada() {
     }).showToast()
 }
 
+
 function mostrarOcultar() {
     let padreContenedor = document.getElementById("productosContenedor")
     let carrito = document.getElementById("contenedorCarrito")
@@ -233,36 +140,3 @@ function graciasPorSuCompra() {
         'success'
     )
 }
-
-/*<button ${id} type="button" class="bi bi-trash3"></button>*/
-
-
-
-/*
-function modificarCantidad(event, cantidad) {
-    let productoId = parseInt(event.target.dataset.id)
-    let productoEnCarrito = carrito.find((producto) => producto.id === productoId)
-
-    if (productoEnCarrito && productoEnCarrito.cantidad + cantidad >= 1) {
-        productoEnCarrito.cantidad += cantidad
-    }
-}
-
-function eliminarDelCarrito(event) {
-    let productoId = parseInt(event.target.dataset.id)
-    let productoEliminar = carrito.findIndex((producto) => producto.id === productoId)
-
-    if (productoEliminar !== -1) {
-        carrito.splice(productoEliminar, 1)
-        localStorage.setItem('carrito', JSON.stringify(carrito))
-
-        if (carrito.length === 0) {
-            localStorage.removeItem('carrito')
-        } else {
-            renderizarCarrito()
-        }
-    } else {
-        renderizarCarrito()
-    }
-}
-*/
