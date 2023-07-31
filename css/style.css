@@ -41,7 +41,8 @@ h1 {
 }
 
 #logoHeader {
-    width: 8%;
+    padding: 10px;
+    width: 30vw;
 }
 
 
@@ -61,18 +62,17 @@ h1 {
     font-size: 3em;
 }
 
-
 #contenedor {
     margin: 10px;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: 1fr;
     grid-template-rows: auto;
 }
 
 .contenedorFiltrado {
     margin: 10px;
     display: grid;
-    grid-template-columns: 1;
+    grid-template-columns: contain;
     grid-template-rows: auto;
 }
 
@@ -100,7 +100,7 @@ h1 {
 }
 
 .imagen {
-    width: 15vw;
+    width: 70vw;
     height: auto;
     background-position: center;
     background-repeat: no-repeat;
@@ -159,10 +159,19 @@ h1 {
         width: 8%;
     }
 
+
     #contenedor {
         margin: 10px;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: auto;
+    }
+
+    .imagen {
+        width: 15vw;
+        height: auto;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
 }
